@@ -1,141 +1,83 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from "yup";
-import axios from "axios";
-import Loader from "../Loader/Loader"; 
+import React from 'react';
+import { useState } from 'react';
+import {PaystackButton} from 'react-paystack';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "./Payment.css";
 
 
-
-// const phoneNumber = /^((\\+[1-9]{1,4}[\\-]*)|(\\([0-9]{2,3}\\)))
-// validate inputs
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-    .min(2, 'Name must have at least 2 characters')
-    .required('Name is required'),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-    phoneNumber: Yup.number().required("Phone number is required"),
-  amount: Yup.number().required("Amount is required")
-});
 
 const Payment = () => {
-  const handleSubmit = async (values, actions) => {
-    try {
-      // Paystack Initialization API Call
-      const initResponse = await axios.post("https://api.paystack.co/transaction/initialize", {
-        email: values.email,
-        amount: values.amount * 100
-      }, {
-    
-        
-        headers: {
+  const [name , setName] = useState("");
+  const [email, setEmail] = useState('');
+  const[phoneNumber,  setPhoneNumber] = useState('');
+  const [amount , setamount] = useState(0);
+  const publicKey = 'pk_test_9876a5216aa5caf77e4d8c2e014453a13e28ee5c'
+  
 
-          "Authorization": "Bearer sk_test_c26db9b3e7321266a9801efae65ee86139393b54",
-          "content-type": "application/json",
-        }
-        
-      });
-      console.log(initResponse.data);
-      if(initResponse) { 
-       await createChargeResponse(initResponse , values , actions) 
-      }
-
-      // Paystack Charge API Call
-      // const chargeResponse = await axios.post("https://api.paystack.co/transaction/charge_authorization",{
-      //   authorization_code: `AUTH_${initResponse.data.data.access_code}`,
-      //   email: values.email,
-      //   amount:  values.amount * 100
-      // }, {
-      //   headers: {
-          
-      //     "Authorization": "Bearer sk_test_c26db9b3e7321266a9801efae65ee86139393b54",
-      //     "content-type": "application/json"
-      //   }
-      // });
-
-      // console.log(chargeResponse);
-
-      // if (chargeResponse.data.data.status === "success") {
-      //   actions.setSubmitting(false);
-      //   toast.success("Payment successful!");
-
-      // } else {
-      //   actions.setSubmitting(false);
-      //   toast.error('Payment failed!')
-
-      // }
-    } catch (error) {
-      actions.setSubmitting(false);
-      toast.error(error.message)
-
+  const BuyCourses = { 
+    email,
+    amount: amount*100,
+    metaData: {
+      name,
+      phoneNumber,
+    },
+    publicKey,
+    text:" Register Now",
+    onSuccess:() => 
+      toast.success("You have Successfully registerd this course"),
+      onClose:() => toast.error(" Transaction was unsuccessfull"),
     }
 
 
-  };
-  const createChargeResponse = async (initResponse , values, actions) => {
-    const chargeResponse = await axios.post("https://api.paystack.co/transaction/charge_authorization",{
-      authorization_code: `AUTH_${initResponse.data.data.access_code}`,
-      email: values.email,
-      amount:  values.amount * 100
-    }, {
-      headers: {
-        
-        "Authorization": "Bearer sk_test_c26db9b3e7321266a9801efae65ee86139393b54",
-        "content-type": "application/json"
-      }
-    });
-    if (chargeResponse.data.data.status === "success") {
-      actions.setSubmitting(false);
-      toast.success("Payment successful!");
 
-    } else {
-      actions.setSubmitting(false);
-      toast.error('Payment failed!')
-
-    }
-
-
-  }
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        email: "",
-        amount: "", 
-        phoneNumber: "" 
-      }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-        <Field type="text" name="name" placeholder="Name" />
-  <ErrorMessage name='name' component='div' className='error' />
+    <>
+                    <div className="form-container">
+                <div className="form-wrapper">
 
-          <Field type="email" name="email" placeholder="Email" />
-          <ErrorMessage name='email' component='div' className='error' />
+    <form action="">
+    <div className="form-control">
 
-          <Field type="number" name="amount" placeholder="Amount" />
-          <ErrorMessage name='amount' component='div' className='error' />
-          <Field type="number" name="phoneNumber" placeholder="Phone number" />
-          <ErrorMessage name='phoneNumber' component='div' className='error' />
+    <h2><span className='highlight'>Registar </span> Courses</h2>
 
-          {isSubmitting ? (
-            <Loader/>
-          ) : (
+      <input type="text"placeholder='Enter Name'
+      onChange={(e) => setName(e.target.value)} 
+       />
+       </div>
+       <div className="form-control">
 
-          <button type="submit" disabled={isSubmitting}>
-            Pay Now
-          </button>
-          )}
-          <ToastContainer/>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+             <input type="email"placeholder='Enter email'
+      onChange={(e) => setEmail(e.target.value)} 
+       />
+       </div>
+       <div className="form-control">
 
+             <input type="number"placeholder='Enter amount'
+      onChange={(e) => setamount(e.target.value)} 
+       />
+       </div>
+       <div className="form-control">
+
+             <input type="number"placeholder='Enter Phone Number'
+      onChange={(e) => setPhoneNumber(e.target.value)} 
+       />
+       </div>
+       < ToastContainer/>
+
+
+    </form>
+    <div className="register">
+
+<PaystackButton className="paystack" {...BuyCourses} />
+
+</div>
+
+    </div>
+    </div>
+
+    </>
+    );
+}
+ 
 export default Payment;

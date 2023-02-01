@@ -1,6 +1,8 @@
 import React from "react";
 import { ColorRing } from "react-loader-spinner";
 import ReactDOM from "react-dom"; 
+import "./Loader.css";
+
 
 const Loader = () => {
     return ReactDOM.createPortal( 
@@ -12,6 +14,7 @@ const Loader = () => {
             style={{
                 background:"linear-gradiant(to right , white ,#0083b0)"
             }}
+            className="ring"
             />
 
         </div>,
