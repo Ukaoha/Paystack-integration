@@ -85,7 +85,34 @@ const ResolveCardBin = () => {
                 </div>
             )}
             </Formik>
-            {cardDetails && JSON.stringify(cardDetails)}
+            {/* {cardDetails && JSON.stringify(cardDetails)} */}
+            <div className='userdetailes'>    
+              {cardDetails && (
+  <>
+    <h2 className='user'>Account Details</h2>
+    <p className='user'>
+      {
+      Object.entries(cardDetails).map(([key, value], index) => {
+        return(
+          <>
+          <span key={index}>
+            {key}: {value}
+
+          </span>
+          <br/><br/>
+             </>
+
+
+        )
+
+
+      })
+      }
+      </p>
+  </>
+)}
+</div>
+ 
         </>
       );
 }

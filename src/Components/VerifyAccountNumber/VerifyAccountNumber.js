@@ -116,7 +116,25 @@ const VerifyAccountNumber = () => {
               {userDetails && (
   <>
     <h2 className='user'>Account Details</h2>
-    <p className='user'>{JSON.stringify(userDetails)}</p>
+    <p className='user'>
+      {
+      Object.entries(userDetails).map(([key, value], index) => {
+        return(
+          <>
+          <span key={index}>
+            {key}: { value}
+
+          </span>
+          <br/><br/>
+             </>
+
+
+        )
+
+
+      })
+      }
+      </p>
   </>
 )}
 </div>
