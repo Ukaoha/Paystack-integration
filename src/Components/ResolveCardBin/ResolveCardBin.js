@@ -76,7 +76,7 @@ const ResolveCardBin = () => {
                 ) : (
         
                 <button className='submit' type="submit" disabled={isSubmitting}>
-                    Pay Now
+                    Resolve Card Bin
                 </button>
                 )}
                 <ToastContainer/>

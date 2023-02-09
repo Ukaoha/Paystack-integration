@@ -103,7 +103,7 @@ const VerifyAccountNumber = () => {
                   ) : (
         
                   <button className='submit' type="submit" disabled={isSubmitting}>
-                    Pay Now
+                    Verify Account
                   </button>
                   )}
                   <ToastContainer/>

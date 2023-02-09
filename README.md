@@ -1,3 +1,6 @@
+# Apex 
+### A payment website with paystack integration APIs used :payment, verifyaccount number , resolve card bin
+Live site [Apex](https://paystack-integration.netlify.app)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
